@@ -1,0 +1,22 @@
+# Install and load required packages
+install.packages(c("survival", "prodlim"))
+library(survival)
+library(prodlim)
+
+# Simulate survival data
+set.seed(123)
+time <- c(5, 10, 10, 15, 20, 20, 25, 30)
+status <- c(1, 1, 0, 1, 0, 1, 1, 1)
+
+# Zeng-Klein Estimator
+zeng_klein_est <- zeng_klein_estimator(time, status)
+
+# Rivest-Wells Estimator
+rivest_wells_est <- prodlim(Surv(time, status) ~ 1)
+
+# Plot the estimators
+plot(rivest_wells_est, col.est = "blue", main = "Comparison of Estimators",
+     xlab = "Time", ylab = "Survival Probability", lwd = 2, legend.main = "Rivest-Wells")
+
+lines(unique(time), zeng_klein_est, col = "red", lty = 2, lwd = 2)
+legend("topright", legend = c("Rivest-Wells", "Zeng-Klein"), col = c("blue", "red"), lty = 1:2, cex = 0.8)
